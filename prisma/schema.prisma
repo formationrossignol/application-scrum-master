@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String?
+  email         String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  favorites     Favorite[]
+  progress      Progress[]
+  workshopRuns  WorkshopRun[]
+  immersiveRuns ImmersiveRun[]
+  quizRuns      QuizRun[]
+}
+model ToolCategory { id String @id @default(cuid()) name String @unique slug String @unique description String? tools Tool[] }
+model Tool {
+  id String @id @default(cuid())
+  slug String @unique
+  name String
+  shortDescription String
+  longDescription String
+  difficulty String
+  durationEstimate Int?
+  usageMode String?
+  isPublished Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  categoryId String
+  category ToolCategory @relation(fields: [categoryId], references: [id])
+  workshops Workshop[]
+  immersiveItems ImmersiveExperience[]
+  quizzes Quiz[]
+}
+model Workshop { id String @id @default(cuid()) slug String @unique title String summary String description String level String durationMinutes Int mode String isPublished Boolean @default(true) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt toolId String tool Tool @relation(fields: [toolId], references: [id]) steps WorkshopStep[] runs WorkshopRun[] }
+model WorkshopStep { id String @id @default(cuid()) workshopId String workshop Workshop @relation(fields: [workshopId], references: [id]) order Int title String instruction String stepType String configJson Json }
+model WorkshopRun { id String @id @default(cuid()) userId String workshopId String status String progress Int @default(0) dataJson Json? startedAt DateTime @default(now()) completedAt DateTime? user User @relation(fields: [userId], references: [id]) workshop Workshop @relation(fields: [workshopId], references: [id]) }
+model ImmersiveExperience { id String @id @default(cuid()) slug String @unique title String summary String description String level String durationMinutes Int isPublished Boolean @default(true) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt toolId String tool Tool @relation(fields: [toolId], references: [id]) scenes ImmersiveScene[] runs ImmersiveRun[] }
+model ImmersiveScene { id String @id @default(cuid()) immersiveId String immersive ImmersiveExperience @relation(fields: [immersiveId], references: [id]) order Int title String context String choicesJson Json scoringJson Json? }
+model ImmersiveRun { id String @id @default(cuid()) userId String immersiveId String status String score Int? decisionsJson Json? startedAt DateTime @default(now()) completedAt DateTime? user User @relation(fields: [userId], references: [id]) immersive ImmersiveExperience @relation(fields: [immersiveId], references: [id]) }
+model Quiz { id String @id @default(cuid()) slug String @unique title String summary String description String level String durationMinutes Int? isPublished Boolean @default(true) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt toolId String? tool Tool? @relation(fields: [toolId], references: [id]) questions QuizQuestion[] runs QuizRun[] }
+model QuizQuestion { id String @id @default(cuid()) quizId String quiz Quiz @relation(fields: [quizId], references: [id]) order Int question String explanation String? questionType String answersJson Json }
+model QuizRun { id String @id @default(cuid()) userId String quizId String score Int? answersJson Json? startedAt DateTime @default(now()) completedAt DateTime? user User @relation(fields: [userId], references: [id]) quiz Quiz @relation(fields: [quizId], references: [id]) }
+model Favorite { id String @id @default(cuid()) userId String contentType String contentId String createdAt DateTime @default(now()) user User @relation(fields: [userId], references: [id]) }
+model Progress { id String @id @default(cuid()) userId String contentType String contentId String progressValue Int @default(0) lastOpenedAt DateTime @default(now()) user User @relation(fields: [userId], references: [id]) }
