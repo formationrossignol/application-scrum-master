@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
-    "db:seed": "tsx prisma/seed.ts",
-    "doctor": "node scripts/doctor.mjs"
+    "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -41,10 +40,5 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
-  },
-  "engines": {
-    "node": ">=20 <25",
-    "npm": ">=10"
-  },
-  "packageManager": "npm@11.12.1"
+  }
 }
