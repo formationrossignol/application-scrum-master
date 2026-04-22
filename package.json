@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
-    "db:seed": "tsx prisma/seed.ts",
-    "doctor": "node scripts/doctor.mjs"
+    "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -19,8 +18,8 @@
     "lucide-react": "^0.453.0",
     "next": "15.0.0",
     "next-auth": "^4.24.7",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "19.0.0-rc-02c0e824-20241028",
+    "react-dom": "19.0.0-rc-02c0e824-20241028",
     "react-hook-form": "^7.53.0",
     "recharts": "^2.12.7",
     "zod": "^3.23.8",
@@ -28,8 +27,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.7.6",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.12.0",
     "eslint-config-next": "15.0.0",
@@ -41,10 +40,5 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
-  },
-  "engines": {
-    "node": ">=20 <25",
-    "npm": ">=10"
-  },
-  "packageManager": "npm@11.12.1"
+  }
 }
